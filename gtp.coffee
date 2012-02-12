@@ -1,5 +1,6 @@
 EventEmitter = require('events').EventEmitter
 
+"""
 class GTPProtocol extends EventEmitter ->
     constructor: (@input, @output) ->
 
@@ -8,6 +9,7 @@ class GTPProtocol extends EventEmitter ->
 
     protocolVersion: (version=2) ->
         @respond version
+"""
 
 module.exports = (input) ->
     emitter = new EventEmitter()
