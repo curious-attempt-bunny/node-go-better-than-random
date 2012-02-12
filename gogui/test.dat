@@ -1,0 +1,17 @@
+# Black: gogui-dummy
+# BlackCommand: bin/gogui-dummy
+# BlackLabel: gogui-dummy:1.4.2
+# BlackVersion: 1.4.2
+# Date: January 31, 2012 8:15:14 AM PST
+# Host: clcyescsep03.postdirect.com
+# Komi: 6.5
+# Referee: -
+# Size: 19
+# White: gogui-dummy
+# WhiteCommand: bin/gogui-dummy
+# WhiteLabel: gogui-dummy:1.4.2
+# WhiteVersion: 1.4.2
+# Xml: 0
+#
+#GAME	RES_B	RES_W	RES_R	ALT	DUP	LEN	TIME_B	TIME_W	CPU_B	CPU_W	ERR	ERR_MSG
+0	?	?	?	0	-	363	0.1	0	0	0	0	
