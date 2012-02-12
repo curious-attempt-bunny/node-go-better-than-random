@@ -1,14 +1,14 @@
 EventEmitter = require('events').EventEmitter
-###
-class GTPProtocot(EventEmitter) ->
-    init(in, out) ->
-        @in = in
-        @out = out
-    respond(msg) ->
-        @out.write('= ' + msg + '\n')
-    protocolVersion(version='2') ->
-        @respond(version)
-###
+
+class GTPProtocol extends EventEmitter ->
+    constructor: (@input, @output) ->
+
+    respond: (msg) ->
+        @output.write '= ' + msg + '\n'
+
+    protocolVersion: (version=2) ->
+        @respond version
+
 module.exports = (input) ->
     emitter = new EventEmitter()
 
