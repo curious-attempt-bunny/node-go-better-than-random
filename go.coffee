@@ -1,14 +1,15 @@
 _ = require 'underscore'
+assert = require 'assert'
 
 coordToStr = (coord) -> coord.join '-'
 
 class Go
-    constructor: (@width, @height) ->
+    constructor: (@size) ->
         @board = {}
 
     playMove: (player, coord) ->
         key = coordToStr coord
-        if coord[0] >= @width || coord[0] < 0 || coord[1] >= @height || coord[1] < 0
+        if coord[0] >= @size or coord[0] < 0 or coord[1] >= @size or coord[1] < 0
             throw 'Invalid move: out of range'
         else if @board[key]
             throw 'Invalid move: piece already there'
@@ -16,28 +17,34 @@ class Go
 
     canMove: (player, coord) ->
         key = coordToStr coord
-        if coord[0] >= @width || coord[0] < 0 || coord[1] >= @height || coord[1] < 0
-            false
-        else if @board[key]
-            false
-        else
-            true
+        !(coord[0] >= @size or coord[0] < 0 or coord[1] >= @size \
+            or coord[1] < 0 or @board[key]?)
 
     legalMoves: (player) ->
+        (([x, y] for x in [0...@size]) for y in [0...@size] \
+            when not @board[coordToStr [x, y]]?)
 
-    getScore: () ->
-        
-    clone: () ->
-        game = new Go(@width, @height)
-        game.board = Object.create @board
+    smartMoves: (player) ->
+        # TODO: return moves that won't be immediately captured, or any other
+        #       easily testable dumb mistakes.
+        @legalMoves player
 
-        @board = Object.create @board
+    getScore: ->
+        "you're awesome!"
+
+    clone: ->
+        game = new Go(@size)
+        game.board = _.clone @board
 
 module.exports = Go
 
 if !module.parent
     game = new Go
 
-    console.log game.canMove(1, [2, 3])
+    assert.equal game.canMove(1, [-1, 3]), false
+    assert.equal game.canMove(1, [-1, 3]), false
+    assert.equal game.canMove(1, [3, -2]), false
+
+    assert.equal game.canMove(1, [2, 3]), true
     game.playMove(1, [2, 3])
-    console.log game.canMove(1, [2, 3])
+    assert.equal game.canMove(1, [2, 3]), false
