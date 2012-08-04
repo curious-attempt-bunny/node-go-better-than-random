@@ -2,7 +2,7 @@
   "author": "Merlyn Albery-Speyer",
   "name": "go-better-than-random",
   "description": "Go AI that's better than random!",
-  "version": "0.0.0",
+  "version": "0.2",
   "repository": {
     "type": "git",
     "url": "git://github.com/curious-attempt-bunny/node-go-better-than-random.git"

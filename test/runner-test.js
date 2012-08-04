@@ -28,13 +28,29 @@ vows.describe('runner').addBatch({
     // },
 
     'with command': {
-      '"name"': {
-        topic: send('namxe'),
+      'NAME': {
+        topic: send('name'),
 
         'should respond with the engine name': function(err, result) {
           assert.equal(result, "node-go-better-than-random\n");
         }
+      },
+
+      'PROTOCOL': {
+        topic: send('protocol'),
+
+        'should respond with the protocol version': function(err, result) {
+          assert.equal(result, "2\n");
+        }
+      },
+
+      'VERSION': {
+        topic: send('version'),
+
+        'should respond with the version number': function(err, result) {
+          assert.isNotNull(result);
+        }
       }
-    }
+    }    
   }
 }).exportTo(module);

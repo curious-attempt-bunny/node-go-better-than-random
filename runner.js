@@ -1,29 +1,39 @@
+var fs = require('fs');
+
 module.exports = function Runner(input, output, debug) {
-  var respond;
-
-  var runner = {
-    onInputData: function(data) {
-      commands = data.split(/\r?\n\r?/);
-      for(var i=0; i<commands.length; i++) {
-        if (commands[i].length > 0) {
-          // debug('>> '+commands[i]);
-          runner.onCommand(commands[i]);
-        }
-      }
-    },
-
-    onCommand: function(command) {
-      if (command === 'quit') {
-        process.exit(0);
-      } else if (command === 'name') {
-        respond("node-go-better-than-random");
-      } else {
-        respond('Did not recognize: "'+command+'"');
+  var onInputData = function(data) {
+    commands = data.split(/\r?\n\r?/);
+    for(var i=0; i<commands.length; i++) {
+      if (commands[i].length > 0) {
+        // debug('>> '+commands[i]);
+        onCommand(commands[i]);
       }
     }
   };
 
-  respond = (typeof(output) == 'function' ? output : function(msg) { output.write(msg+'\n'); }); 
+  var commandHandlers = {
+    quit: function() { process.exit(0); },
+    "name": "node-go-better-than-random",
+    "protocol": 2,
+    "version": function() { return JSON.parse(fs.readFileSync('package.json'))['version'] }
+  };
+
+  var onCommand = function(command) {
+    var response;
+    if (commandHandlers.hasOwnProperty(command)) {
+      var handler = commandHandlers[command];
+      if (typeof(handler) == 'function') {
+        response = handler();
+      } else {
+        response = handler.toString();
+      }
+    } else {
+      response = 'Did not recognize: "'+command+'"';
+    }
+    respond(response);
+  };
+
+  var respond = (typeof(output) == 'function' ? output : function(msg) { output.write(msg+'\n'); }); 
 
   // respond = function(_respond) {
   //   return function(msg) {
@@ -40,9 +50,9 @@ module.exports = function Runner(input, output, debug) {
   //   };
   // }(debug);
 
-  input.on('data', runner.onInputData);
+  input.on('data', onInputData);
 
-  return runner;
+  return undefined;
 };
 
 if (!module.parent) {
