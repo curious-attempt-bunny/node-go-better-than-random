@@ -1,14 +1,40 @@
 var vows = require('vows');
 var assert = require('assert');
+var sinon = require('sinon');
 
-var runner = require('../runner');
+var util = require('util');
+var events = require('events');
+
+var Runner = require('./../runner.js');
+
+var send = function(command) {
+  return function() {
+    var input = new events.EventEmitter;
+    var callback = this.callback
+    Runner(input, {write: function(msg) { callback(null, msg); }});
+    input.emit('data', command);
+  };
+};
 
 vows.describe('runner').addBatch({
   'A runner': {
-    'receiving a quit command': {
-      'exits cleanly': function() {
-        assert.equal(1, 1);
+    // 'receiving a quit command': {
+    //   // NOTE: this test does not work.
+    //   'exits cleanly': sinon.test(function() {
+    //     this.mock(process).expects("exit").once();
+
+    //     input.emit('data', 'quit\n');
+    //   })
+    // },
+
+    'with command': {
+      '"name"': {
+        topic: send('namxe'),
+
+        'should respond with the engine name': function(err, result) {
+          assert.equal(result, "node-go-better-than-random\n");
+        }
       }
     }
   }
-}).run();
+}).exportTo(module);

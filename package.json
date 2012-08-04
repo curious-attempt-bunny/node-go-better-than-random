@@ -12,7 +12,8 @@
   },
   "dependencies": {
     "vows": "0.6.3",
-    "assert": "0.4.9"
+    "assert": "0.4.9",
+    "sinon": "1.4.2"
   },
   "devDependencies": {},
   "optionalDependencies": {}
