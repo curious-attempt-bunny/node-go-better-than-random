@@ -13,9 +13,10 @@ module.exports = function Runner(input, output, debug) {
 
   var commandHandlers = {
     quit: function() { process.exit(0); },
-    "name": "node-go-better-than-random",
-    "protocol": 2,
-    "version": function() { return JSON.parse(fs.readFileSync('package.json'))['version'] }
+    name: "node-go-better-than-random",
+    protocol: 2,
+    version: function() { return JSON.parse(fs.readFileSync('package.json'))['version'] },
+    list_commands: function() { return Object.keys(commandHandlers).sort().join("\n"); }
   };
 
   var onCommand = function(command) {

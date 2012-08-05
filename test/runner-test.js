@@ -50,6 +50,20 @@ vows.describe('runner').addBatch({
         'should respond with the version number': function(err, result) {
           assert.isNotNull(result);
         }
+      },
+
+      'LIST_COMMANDS': {
+        topic: send('list_commands'),
+
+        'should response with the list of commands it accepts': function(err, result) {
+          var commands = result.split(/\n/);
+          assert.ok(commands.length >= 5);
+          assert.ok(commands.indexOf('name') != -1);
+          assert.ok(commands.indexOf('protocol') != -1);
+          assert.ok(commands.indexOf('version') != -1);
+          assert.ok(commands.indexOf('quit') != -1);
+          assert.ok(commands.indexOf('list_commands') != -1);
+        }
       }
     }    
   }
