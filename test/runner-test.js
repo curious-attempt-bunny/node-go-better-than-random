@@ -55,14 +55,45 @@ vows.describe('runner').addBatch({
       'LIST_COMMANDS': {
         topic: send('list_commands'),
 
-        'should response with the list of commands it accepts': function(err, result) {
-          var commands = result.split(/\n/);
-          assert.ok(commands.length >= 5);
-          assert.ok(commands.indexOf('name') != -1);
-          assert.ok(commands.indexOf('protocol') != -1);
-          assert.ok(commands.indexOf('version') != -1);
-          assert.ok(commands.indexOf('quit') != -1);
-          assert.ok(commands.indexOf('list_commands') != -1);
+        'should respond with the list of commands it accepts': function(err, result) {
+          var actual_commands = result.trim().split(/\n/);
+          var expected_commands = [
+            'protocol', 'version', 'name', 'known_command', 'list_commands', 'quit', 
+            'boardsize', 'clear_board', 'komi', 'play', 'genmove'
+          ];
+          assert.deepEqual(actual_commands.sort(), expected_commands.sort());
+        }
+      },
+
+      'BOARDSIZE': {
+        topic: send('boardsize 19'),
+
+        'should respond with a blank line': function(err, result) {
+          assert.equal(result, "\n");
+        }
+      },
+
+      'CLEAR_BOARD': {
+        topic: send('clear_board'),
+
+        'should respond with a blank line': function(err, result) {
+          assert.equal(result, "\n");
+        }
+      },
+
+      'PLAY': {
+        topic: send('play B D16'),
+
+        'should respond with a blank line': function(err, result) {
+          assert.equal(result, "\n");
+        }
+      },
+
+      'GENMOVE': {
+        topic: send('genmove w'),
+
+        'should respond with a coordinate': function(err, result) {
+          assert.ok(/([A-H,J-T](1[0-9]|[1-9]))|pass|resign/.test(result));
         }
       }
     }    
