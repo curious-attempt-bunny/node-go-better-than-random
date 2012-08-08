@@ -28,7 +28,25 @@ vows.describe('board').addBatch({
 
     'should notate an array of indexes correctly': function(board) {
       assert.deepEqual(board.notate([(5*1)+1+0, (5*1)+1+1, (5*2)+1+0]), ['A1', 'B1', 'A2']);
-    },    
+    },
+
+    'should be black to play': function(board) {
+      assert.equal('b', board.notatePlayer(board.next()));
+    },
+
+    'should reverse notate correctly': function(board) {
+      assert.equal((5*1)+1+0, board.reverseNotate('A1'));
+      assert.equal((5*1)+1+1, board.reverseNotate('B1'));
+      assert.equal((5*2)+1+0, board.reverseNotate('A2'));
+    },
+
+    'center liberty count': {
+      topic: function(board) { return board.play(board.next, board.reverseNotate('B2')); },
+
+      'should be correct': function(board) {
+        assert.equal(4, board.libertyCount(board.reverseNotate('B2')));
+      }
+    }    
   },
 
   'A 19x19 board': {
