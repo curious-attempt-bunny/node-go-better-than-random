@@ -5,7 +5,7 @@ var sinon = require('sinon');
 var util = require('util');
 var events = require('events');
 
-var Runner = require('./../runner.js');
+var Runner = require('./../lib/runner.js');
 
 var send = function(command) {
   return function() {
