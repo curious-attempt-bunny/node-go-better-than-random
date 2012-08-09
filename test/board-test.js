@@ -40,11 +40,23 @@ vows.describe('board').addBatch({
       assert.equal((5*2)+1+0, board.reverseNotate('A2'));
     },
 
-    'center liberty count': {
+    'after a tengen move': {
       topic: function(board) { return board.play(board.next, board.reverseNotate('B2')); },
 
-      'should be correct': function(board) {
+      'should have the correct liberty count': function(board) {
         assert.equal(4, board.libertyCount(board.reverseNotate('B2')));
+      },
+
+      'should be white to play': function(board) {
+        assert.equal('w', board.notatePlayer(board.next()));
+      },
+
+      'after another move by black that connects': {
+        topic: function(board) { return board.play(board.next, board.reverseNotate('B1')); },
+
+        'should have the correct liberty count': function(board) {
+          assert.equal(board.libertyCount(board.reverseNotate('B2')), 5);
+        }
       }
     }    
   },
